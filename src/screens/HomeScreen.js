@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar, Alert, ActivityIndicator, } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import PostCard from '../components/PostCard';
-import { useNotifications } from '../hooks/useNotifications';
 
 const COLORS = {
   primary: '#6C63FF',
@@ -22,7 +21,7 @@ const DUMMY_POSTS = [
     id: '1',
     username: 'andi_pratama',
     imageUri: 'https://picsum.photos/seed/post1/800/800',
-    caption: 'Sunset di pantai Kuta yang luar biasa indah! 🌅 #Bali #Travel #Photography',
+    caption: 'Sunset di pantai Kuta yang luar biasa indah! #Bali #Travel #Photography',
     likes: 142,
     comments: 23,
     timestamp: '2 jam lalu',
@@ -32,7 +31,7 @@ const DUMMY_POSTS = [
     id: '2',
     username: 'sari_dewi',
     imageUri: 'https://picsum.photos/seed/post2/800/800',
-    caption: 'Kopi pagi sambil nugas. Produktif mode: ON ☕ #CoffeeTime #WorkFromHome',
+    caption: 'Kopi pagi sambil nugas. Produktif mode: ON #CoffeeTime #WorkFromHome',
     likes: 89,
     comments: 11,
     timestamp: '4 jam lalu',
@@ -42,7 +41,7 @@ const DUMMY_POSTS = [
     id: '3',
     username: 'budi_setiawan',
     imageUri: 'https://picsum.photos/seed/post3/800/800',
-    caption: 'Hiking ke Gunung Rinjani, worth it banget! 🏔️ #Adventure #Hiking #NTB',
+    caption: 'Hiking ke Gunung Rinjani, worth it banget! #Adventure #Hiking #NTB',
     likes: 231,
     comments: 45,
     timestamp: '8 jam lalu',
@@ -52,7 +51,7 @@ const DUMMY_POSTS = [
     id: '4',
     username: 'maya_kusuma',
     imageUri: 'https://picsum.photos/seed/post4/800/800',
-    caption: 'Weekend getaway ke Yogyakarta 🏯 Candi Borobudur selalu memukau.',
+    caption: 'Weekend getaway ke Yogyakarta. Candi Borobudur selalu memukau.',
     likes: 178,
     comments: 32,
     timestamp: '1 hari lalu',
@@ -62,7 +61,7 @@ const DUMMY_POSTS = [
     id: '5',
     username: 'rizky_hakim',
     imageUri: 'https://picsum.photos/seed/post5/800/800',
-    caption: 'Street food hunting di kawasan Pecinan. Yummy! 🍜 #FoodPhotography',
+    caption: 'Street food hunting di kawasan Pecinan. Yummy! #FoodPhotography',
     likes: 95,
     comments: 18,
     timestamp: '1 hari lalu',
@@ -71,38 +70,7 @@ const DUMMY_POSTS = [
 ];
 
 export default function HomeScreen() {
-  const {
-    sendTestNotification,
-    loading: notifLoading,
-    expoPushToken,
-    available: notificationsAvailable,
-  } = useNotifications();
   const [refreshing, setRefreshing] = useState(false);
-
-  const handleSendTestNotif = async () => {
-    const senders = ['Andi Pratama', 'Sari Dewi', 'Budi Setiawan', 'Maya Kusuma'];
-    const messages = [
-      'Hei! Lihat post terbaru kamu keren banget!',
-      'Kapan kita jalan-jalan lagi nih? 😄',
-      'Foto kamu yang tadi bagus banget!',
-      'Check out story baruku ya 📸',
-    ];
-    const randomIdx = Math.floor(Math.random() * senders.length);
-
-    const success = await sendTestNotification(
-      senders[randomIdx],
-      messages[randomIdx],
-      3 
-    );
-
-    if (success) {
-      Alert.alert(
-        '✅ Notifikasi Dijadwalkan',
-        'Notifikasi simulasi chat akan muncul dalam 3 detik.',
-        [{ text: 'OK' }]
-      );
-    }
-  };
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -110,33 +78,8 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <View>
-      <View style={styles.notifBanner}>
-        <View style={styles.notifInfo}>
-          <Ionicons name="notifications" size={18} color={COLORS.primary} />
-          <Text style={styles.notifText}>
-            {notificationsAvailable
-              ? (expoPushToken ? 'Push token aktif' : 'Notifikasi lokal aktif')
-              : 'Notifikasi penuh perlu development build'}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.notifButton}
-          onPress={handleSendTestNotif}
-          disabled={notifLoading}
-        >
-          {notifLoading ? (
-            <ActivityIndicator size="small" color={COLORS.text} />
-          ) : (
-            <>
-              <Ionicons name="send" size={14} color={COLORS.text} />
-              <Text style={styles.notifButtonText}>Test Notif</Text>
-            </>
-          )}
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.sectionTitle}>For You ✨</Text>
+    <View style={styles.feedHeader}>
+      <Text style={styles.sectionTitle}>For You</Text>
     </View>
   );
 
@@ -195,7 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '800',
     color: COLORS.text,
-    letterSpacing: -0.5,
   },
   logoAccent: {
     color: COLORS.primary,
@@ -233,43 +175,8 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
   },
-  notifBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
-    marginHorizontal: 16,
-    marginBottom: 16,
-    marginTop: 8,
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  notifInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    flex: 1,
-  },
-  notifText: {
-    color: COLORS.textMuted,
-    fontSize: 13,
-    flex: 1,
-  },
-  notifButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 8,
-    gap: 5,
-  },
-  notifButtonText: {
-    color: COLORS.text,
-    fontSize: 12,
-    fontWeight: '700',
+  feedHeader: {
+    paddingTop: 8,
   },
   sectionTitle: {
     color: COLORS.text,

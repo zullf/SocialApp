@@ -3,7 +3,6 @@ import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import * as MediaLibrary from 'expo-media-library';
-import { isExpoGoAndroid, loadNotifications } from './notificationEnvironment';
 
 function showPermissionDeniedAlert(featureName) {
   Alert.alert(
@@ -92,29 +91,4 @@ export async function requestLocationPermission() {
     if (status !== 'granted') { showPermissionDeniedAlert('Lokasi (GPS)'); return false; }
     return true;
   } catch (e) { console.error('[Permissions] Location:', e); return false; }
-}
-
-export async function requestNotificationPermission() {
-  try {
-    const Notifications = await loadNotifications([
-      'getPermissionsAsync',
-      'requestPermissionsAsync',
-    ]);
-    if (!Notifications) return false;
-
-    const { status: existing } = await Notifications.getPermissionsAsync();
-    if (existing === 'granted') return true;
-
-    const shouldRequest = await confirmPermissionRequest(
-      'Notifikasi',
-      isExpoGoAndroid()
-        ? 'SocialApp memakai notifikasi lokal untuk simulasi pesan. Push remote perlu development build di Expo SDK 55.'
-        : 'SocialApp memakai notifikasi untuk mengirim simulasi pesan dan menerima update dari aplikasi.'
-    );
-    if (!shouldRequest) return false;
-
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== 'granted') { showPermissionDeniedAlert('Notifikasi'); return false; }
-    return true;
-  } catch { return false; }
 }
