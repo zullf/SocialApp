@@ -3,27 +3,95 @@
     "name": "SocialApp",
     "slug": "SocialApp",
     "version": "1.0.0",
+    "scheme": "socialapp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0F0F1A"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hasan.socialapp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "SocialApp membutuhkan kamera untuk mengambil foto post.",
+        "NSPhotoLibraryUsageDescription": "SocialApp membutuhkan akses galeri untuk memilih gambar post.",
+        "NSPhotoLibraryAddUsageDescription": "SocialApp membutuhkan izin untuk menyimpan gambar ke galeri.",
+        "NSLocationWhenInUseUsageDescription": "SocialApp membutuhkan lokasi untuk menampilkan pengguna terdekat."
+      }
     },
     "android": {
+      "package": "com.hasan.socialapp",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.INTERNET"
+      ],
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#0F0F1A"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "SocialApp membutuhkan kamera untuk mengambil foto post.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "SocialApp membutuhkan akses galeri untuk memilih gambar post.",
+          "cameraPermission": "SocialApp membutuhkan kamera untuk mengambil gambar.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "SocialApp membutuhkan akses galeri.",
+          "savePhotosPermission": "SocialApp membutuhkan izin untuk menyimpan post ke galeri.",
+          "granularPermissions": [
+            "photo"
+          ]
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "SocialApp membutuhkan lokasi untuk menampilkan pengguna terdekat."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#6C63FF",
+          "defaultChannel": "default"
+        }
+      ],
+      [
+        "expo-file-system",
+        {
+          "enableFileSharing": true
+        }
+      ],
+      "expo-font"
+    ]
   }
 }
