@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 
+import TileMap from '../components/TileMap';
 import { useLocation } from '../hooks/useLocation';
-import NearbyUserMarker from '../components/NearbyUserMarker';
+import { generateNearbyUsers } from '../utils/nearbyUsers';
 
 const COLORS = {
   primary: '#6C63FF',
@@ -15,50 +15,8 @@ const COLORS = {
   text: '#151827',
   textMuted: '#667085',
   accent: '#FF6584',
-  success: '#12B76A',
   border: 'rgba(15, 23, 42, 0.08)',
 };
-
-function generateNearbyUsers(baseLat, baseLng) {
-  return [
-    {
-      id: 'u1',
-      name: 'Andi Pratama',
-      latitude: baseLat + 0.002,
-      longitude: baseLng + 0.003,
-      distance: '~250m',
-      status: 'Fotografer',
-      lastSeen: '5 menit lalu',
-    },
-    {
-      id: 'u2',
-      name: 'Sari Dewi',
-      latitude: baseLat - 0.001,
-      longitude: baseLng + 0.004,
-      distance: '~380m',
-      status: 'Desainer',
-      lastSeen: '12 menit lalu',
-    },
-    {
-      id: 'u3',
-      name: 'Budi Setiawan',
-      latitude: baseLat + 0.003,
-      longitude: baseLng - 0.002,
-      distance: '~420m',
-      status: 'Developer',
-      lastSeen: '30 menit lalu',
-    },
-    {
-      id: 'u4',
-      name: 'Maya Kusuma',
-      latitude: baseLat - 0.003,
-      longitude: baseLng - 0.003,
-      distance: '~490m',
-      status: 'Content Creator',
-      lastSeen: '1 jam lalu',
-    },
-  ];
-}
 
 export default function MapScreen() {
   const { location, errorMsg, loading, retry } = useLocation();
@@ -99,13 +57,6 @@ export default function MapScreen() {
     );
   }
 
-  const mapRegion = {
-    latitude: location.latitude,
-    longitude: location.longitude,
-    latitudeDelta: 0.012,
-    longitudeDelta: 0.012,
-  };
-
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.header}>
@@ -120,51 +71,7 @@ export default function MapScreen() {
       </View>
 
       <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          initialRegion={mapRegion}
-          showsUserLocation={false}   
-          showsMyLocationButton={false}
-          mapType="standard"
-        >
-          <Circle
-            center={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            radius={500}
-            strokeColor="rgba(108, 99, 255, 0.6)"
-            fillColor="rgba(108, 99, 255, 0.08)"
-            strokeWidth={2}
-          />
-
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title="Anda"
-            description="Posisi Anda saat ini"
-          >
-            <View style={styles.userMarker}>
-              <View style={styles.userMarkerInner}>
-                <Ionicons name="person" size={18} color="#FFFFFF" />
-              </View>
-              <View style={styles.userMarkerPulse} />
-            </View>
-          </Marker>
-
-          {nearbyUsers.map((user, index) => (
-            <NearbyUserMarker key={user.id} user={user} index={index} />
-          ))}
-        </MapView>
-
-        <View style={styles.coordsOverlay}>
-          <Ionicons name="navigate" size={12} color={COLORS.primary} />
-          <Text style={styles.coordsText}>
-            {location.latitude.toFixed(5)}, {location.longitude.toFixed(5)}
-          </Text>
-        </View>
+        <TileMap location={location} nearbyUsers={nearbyUsers} />
       </View>
 
       <View style={styles.userList}>
@@ -278,52 +185,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderWidth: 1,
     borderColor: COLORS.border,
-  },
-  map: {
-    flex: 1,
-  },
-  coordsOverlay: {
-    position: 'absolute',
-    bottom: 12,
-    left: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.92)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-    gap: 5,
-  },
-  coordsText: {
-    color: COLORS.textMuted,
-    fontSize: 11,
-    fontFamily: 'monospace',
-  },
-  userMarker: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    width: 50,
-    height: 50,
-  },
-  userMarkerInner: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: COLORS.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: COLORS.card,
-    zIndex: 2,
-  },
-  userMarkerPulse: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(108,99,255,0.25)',
-    zIndex: 1,
   },
   userList: {
     padding: 16,
