@@ -3,9 +3,11 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 
 import BottomTabs from './src/navigation/BottomTabs';
+import { NotificationProvider } from './src/context/NotificationContext';
 
 const linking = {
   prefixes: [Linking.createURL('/'), 'socialapp://'],
@@ -40,10 +42,14 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={styles.root}>
-      <NavigationContainer linking={linking}>
-        <StatusBar style="light" />
-        <BottomTabs />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NotificationProvider>
+          <NavigationContainer linking={linking}>
+            <StatusBar style="dark" />
+            <BottomTabs />
+          </NavigationContainer>
+        </NotificationProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

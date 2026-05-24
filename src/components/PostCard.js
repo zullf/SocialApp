@@ -4,8 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { saveImageToGallery } from '../utils/mediaLibrary';
 import { shareFile } from '../utils/sharing';
 
-const COLORS = { primary: '#6C63FF', surface: '#1A1A2E', card: '#16213E', text: '#E8E8F0', textMuted: '#6B6B8A',
-  accent: '#FF6584', success: '#4ECDC4', border: 'rgba(108, 99, 255, 0.15)', };
+const COLORS = { primary: '#6C63FF', surface: '#F4F6FB', card: '#FFFFFF', text: '#151827', textMuted: '#667085',
+  accent: '#FF6584', success: '#12B76A', border: 'rgba(15, 23, 42, 0.08)', };
 
 export default function PostCard({ post }) {
   const [liked, setLiked] = useState(false);
@@ -136,6 +136,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: COLORS.border,
+    shadowColor: '#101828',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    elevation: 3,
   },
   header: {
     flexDirection: 'row',
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarText: {
-    color: COLORS.text,
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
   },

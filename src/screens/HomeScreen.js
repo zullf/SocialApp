@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import PostCard from '../components/PostCard';
+import { useNotifications } from '../context/NotificationContext';
 
 const COLORS = {
   primary: '#6C63FF',
-  background: '#0F0F1A',
-  surface: '#1A1A2E',
-  card: '#16213E',
-  text: '#E8E8F0',
-  textMuted: '#6B6B8A',
+  background: '#FFFFFF',
+  surface: '#F4F6FB',
+  card: '#FFFFFF',
+  text: '#151827',
+  textMuted: '#667085',
   accent: '#FF6584',
-  success: '#4ECDC4',
-  border: 'rgba(108, 99, 255, 0.15)',
+  success: '#12B76A',
+  border: 'rgba(15, 23, 42, 0.08)',
 };
 
 const DUMMY_POSTS = [
@@ -71,20 +73,47 @@ const DUMMY_POSTS = [
 
 export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
+  const { notificationStatus, sendTestNotification } = useNotifications();
 
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1500);
   };
 
-  const renderHeader = () => (
-    <View style={styles.feedHeader}>
-      <Text style={styles.sectionTitle}>For You</Text>
-    </View>
-  );
+  const renderHeader = () => {
+    const notificationLabel = notificationStatus === 'unavailable'
+      ? 'Perlu development build di Android'
+      : notificationStatus === 'granted'
+        ? 'Local notification aktif'
+        : 'Minta izin saat tombol ditekan';
+
+    return (
+      <View style={styles.feedHeader}>
+        <View style={styles.notificationPanel}>
+          <View style={styles.notificationInfo}>
+            <View style={styles.notificationIcon}>
+              <Ionicons name="notifications-outline" size={20} color="#FFFFFF" />
+            </View>
+            <View style={styles.notificationTextWrap}>
+              <Text style={styles.notificationTitle}>Local Notification</Text>
+              <Text style={styles.notificationToken} numberOfLines={1}>
+                {notificationLabel}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.notificationButton} onPress={sendTestNotification}>
+            <Ionicons name="send" size={16} color={COLORS.background} />
+            <Text style={styles.notificationButtonText}>Kirim Test Notif</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.sectionTitle}>For You</Text>
+      </View>
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.logo}>Social<Text style={styles.logoAccent}>App</Text></Text>
         <View style={styles.headerActions}>
@@ -133,6 +162,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
+    backgroundColor: COLORS.background,
   },
   logo: {
     fontSize: 24,
@@ -167,7 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeText: {
-    color: COLORS.text,
+    color: '#FFFFFF',
     fontSize: 9,
     fontWeight: '800',
   },
@@ -177,6 +207,62 @@ const styles = StyleSheet.create({
   },
   feedHeader: {
     paddingTop: 8,
+  },
+  notificationPanel: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 14,
+    backgroundColor: COLORS.card,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    gap: 12,
+    shadowColor: '#101828',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+  notificationInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  notificationIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notificationTextWrap: {
+    flex: 1,
+    minWidth: 0,
+  },
+  notificationTitle: {
+    color: COLORS.text,
+    fontSize: 14,
+    fontWeight: '800',
+    marginBottom: 2,
+  },
+  notificationToken: {
+    color: COLORS.textMuted,
+    fontSize: 12,
+  },
+  notificationButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    paddingVertical: 12,
+    gap: 8,
+  },
+  notificationButtonText: {
+    color: COLORS.background,
+    fontSize: 14,
+    fontWeight: '800',
   },
   sectionTitle: {
     color: COLORS.text,

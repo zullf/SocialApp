@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, SafeAreaView,
+  View, Text, TouchableOpacity, StyleSheet,
   ActivityIndicator, Image, Dimensions, Alert, Animated,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -10,8 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const COLORS = {
-  primary: '#6C63FF', background: '#0F0F1A', surface: '#1A1A2E',
-  text: '#E8E8F0', textMuted: '#6B6B8A', accent: '#FF6584', white: '#FFFFFF',
+  primary: '#6C63FF', background: '#FFFFFF', surface: '#F4F6FB',
+  text: '#151827', textMuted: '#667085', accent: '#FF6584', white: '#FFFFFF',
 };
 
 export default function CameraScreen() {
@@ -100,7 +101,7 @@ export default function CameraScreen() {
 
   if (!permission) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
         <View style={styles.center}>
           <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
@@ -110,7 +111,7 @@ export default function CameraScreen() {
 
   if (!permission.granted) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
         <View style={styles.permissionContainer}>
           <Ionicons name="camera-outline" size={80} color={COLORS.textMuted} />
           <Text style={styles.permissionTitle}>Akses Kamera Diperlukan</Text>
@@ -127,7 +128,7 @@ export default function CameraScreen() {
 
   if (capturedPhoto) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
         <View style={styles.previewContainer}>
           <Text style={styles.previewTitle}>📸 Hasil Foto</Text>
           <Image
@@ -159,7 +160,7 @@ export default function CameraScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.screenTitle}>Kamera</Text>
         <TouchableOpacity style={styles.topButton} onPress={toggleFlash}>
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
   permissionTitle: { color: COLORS.text, fontSize: 22, fontWeight: '700', textAlign: 'center' },
   permissionDesc: { color: COLORS.textMuted, fontSize: 15, textAlign: 'center', lineHeight: 22 },
   permissionButton: { backgroundColor: COLORS.primary, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 14 },
-  permissionButtonText: { color: COLORS.text, fontSize: 16, fontWeight: '700' },
+  permissionButtonText: { color: COLORS.white, fontSize: 16, fontWeight: '700' },
   previewContainer: { flex: 1, padding: 20, alignItems: 'center' },
   previewTitle: { color: COLORS.text, fontSize: 20, fontWeight: '700', marginBottom: 16, alignSelf: 'flex-start' },
   previewImage: { width: SCREEN_WIDTH - 40, aspectRatio: 1, borderRadius: 16 },

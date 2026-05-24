@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -8,14 +9,14 @@ import NearbyUserMarker from '../components/NearbyUserMarker';
 
 const COLORS = {
   primary: '#6C63FF',
-  background: '#0F0F1A',
-  surface: '#1A1A2E',
-  card: '#16213E',
-  text: '#E8E8F0',
-  textMuted: '#6B6B8A',
+  background: '#FFFFFF',
+  surface: '#F4F6FB',
+  card: '#FFFFFF',
+  text: '#151827',
+  textMuted: '#667085',
   accent: '#FF6584',
-  success: '#4ECDC4',
-  border: 'rgba(108, 99, 255, 0.15)',
+  success: '#12B76A',
+  border: 'rgba(15, 23, 42, 0.08)',
 };
 
 function generateNearbyUsers(baseLat, baseLng) {
@@ -69,7 +70,7 @@ export default function MapScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
         <View style={styles.centerContent}>
           <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={styles.loadingText}>Mendapatkan lokasi Anda...</Text>
@@ -81,7 +82,7 @@ export default function MapScreen() {
 
   if (errorMsg) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
         <View style={styles.centerContent}>
           <Ionicons name="location-outline" size={64} color={COLORS.accent} />
           <Text style={styles.errorTitle}>Lokasi Tidak Tersedia</Text>
@@ -90,7 +91,7 @@ export default function MapScreen() {
             style={styles.retryButton}
             onPress={retry}
           >
-            <Ionicons name="refresh-outline" size={18} color={COLORS.text} />
+            <Ionicons name="refresh-outline" size={18} color="#FFFFFF" />
             <Text style={styles.retryButtonText}>Coba Lagi</Text>
           </TouchableOpacity>
         </View>
@@ -106,7 +107,7 @@ export default function MapScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>Pengguna Terdekat</Text>
@@ -125,7 +126,6 @@ export default function MapScreen() {
           showsUserLocation={false}   
           showsMyLocationButton={false}
           mapType="standard"
-          customMapStyle={darkMapStyle} 
         >
           <Circle
             center={{
@@ -148,7 +148,7 @@ export default function MapScreen() {
           >
             <View style={styles.userMarker}>
               <View style={styles.userMarkerInner}>
-                <Ionicons name="person" size={18} color={COLORS.text} />
+                <Ionicons name="person" size={18} color="#FFFFFF" />
               </View>
               <View style={styles.userMarkerPulse} />
             </View>
@@ -186,32 +186,6 @@ export default function MapScreen() {
     </SafeAreaView>
   );
 }
-
-const darkMapStyle = [
-  { elementType: 'geometry', stylers: [{ color: '#1a1a2e' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0f0f1a' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#6b6b8a' }] },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#16213e' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#212a37' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#0d1b2a' }],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'geometry',
-    stylers: [{ color: '#1a1a2e' }],
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -257,7 +231,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   retryButtonText: {
-    color: COLORS.text,
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   header: {
@@ -302,6 +276,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     position: 'relative',
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
   map: {
     flex: 1,
@@ -312,7 +288,7 @@ const styles = StyleSheet.create({
     left: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(15,15,26,0.85)',
+    backgroundColor: 'rgba(255,255,255,0.92)',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
@@ -338,7 +314,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 3,
-    borderColor: COLORS.text,
+    borderColor: COLORS.card,
     zIndex: 2,
   },
   userMarkerPulse: {
@@ -386,7 +362,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   userChipAvatarText: {
-    color: COLORS.text,
+    color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
   },

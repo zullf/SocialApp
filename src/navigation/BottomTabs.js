@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
@@ -10,10 +11,13 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
-const COLORS = { primary: '#6C63FF', background: '#0F0F1A', surface: '#1A1A2E', tabBar: '#16213E', 
-  inactive: '#4A4A6A', white: '#FFFFFF',};
+const COLORS = { primary: '#6C63FF', background: '#FFFFFF', surface: '#F4F6FB', tabBar: '#FFFFFF',
+  inactive: '#98A2B3', white: '#FFFFFF',};
 
 export default function BottomTabs() {
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, 8);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -38,7 +42,13 @@ export default function BottomTabs() {
         },
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: COLORS.inactive,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [
+          styles.tabBar,
+          {
+            height: 56 + bottomInset,
+            paddingBottom: bottomInset,
+          },
+        ],
         tabBarLabelStyle: styles.tabLabel,
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -55,15 +65,13 @@ export default function BottomTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: COLORS.tabBar,
-    borderTopColor: 'rgba(108, 99, 255, 0.2)',
+    borderTopColor: 'rgba(15, 23, 42, 0.08)',
     borderTopWidth: 1,
-    height: Platform.OS === 'ios' ? 85 : 65,
-    paddingBottom: Platform.OS === 'ios' ? 25 : 10,
-    paddingTop: 8,
+    paddingTop: 6,
     elevation: 20,
     shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.08,
     shadowRadius: 12,
   },
   tabLabel: {
@@ -79,6 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconWrapperActive: {
-    backgroundColor: 'rgba(108, 99, 255, 0.15)',
+    backgroundColor: 'rgba(108, 99, 255, 0.12)',
   },
 });

@@ -5,11 +5,11 @@ import { Marker, Callout } from 'react-native-maps';
 const COLORS = {
   primary: '#6C63FF',
   accent: '#FF6584',
-  success: '#4ECDC4',
+  success: '#12B76A',
   warning: '#FFD166',
-  text: '#E8E8F0',
-  surface: '#1A1A2E',
-  card: '#16213E',
+  text: '#151827',
+  surface: '#F4F6FB',
+  card: '#FFFFFF',
 };
 
 const AVATAR_COLORS = [COLORS.accent, COLORS.success, COLORS.warning, COLORS.primary];
@@ -88,23 +88,23 @@ const styles = StyleSheet.create({
     minWidth: 160,
   },
   calloutContent: {
-    backgroundColor: '#16213E',
+    backgroundColor: '#FFFFFF',
     padding: 12,
     borderRadius: 12,
   },
   calloutName: {
-    color: '#E8E8F0',
+    color: '#151827',
     fontWeight: '700',
     fontSize: 15,
     marginBottom: 4,
   },
   calloutDetail: {
-    color: '#A8A8C0',
+    color: '#667085',
     fontSize: 13,
     marginTop: 2,
   },
   calloutTime: {
-    color: '#6B6B8A',
+    color: '#667085',
     fontSize: 11,
     marginTop: 6,
     fontStyle: 'italic',

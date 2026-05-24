@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView,
+import { View, Text, TouchableOpacity, Image, StyleSheet,
         ScrollView, TextInput, ActivityIndicator, Alert,} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { pickAndProcessImage } from '../utils/imageTools';
 import { saveImageToGallery } from '../utils/mediaLibrary';
@@ -8,13 +9,13 @@ import { shareFile } from '../utils/sharing';
 
 const COLORS = {
   primary: '#6C63FF',
-  background: '#0F0F1A',
-  surface: '#1A1A2E',
-  card: '#16213E',
-  text: '#E8E8F0',
-  textMuted: '#6B6B8A',
+  background: '#FFFFFF',
+  surface: '#F4F6FB',
+  card: '#FFFFFF',
+  text: '#151827',
+  textMuted: '#667085',
   accent: '#FF6584',
-  border: 'rgba(108, 99, 255, 0.15)',
+  border: 'rgba(15, 23, 42, 0.08)',
 };
 
 export default function PostScreen({ navigation }) {
@@ -46,7 +47,7 @@ export default function PostScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Buat Post</Text>

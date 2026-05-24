@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView, ScrollView,
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView,
          ActivityIndicator, Alert, Dimensions, } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import { pickAndProcessImage } from '../utils/imageTools';
@@ -11,14 +12,14 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const COLORS = {
   primary: '#6C63FF',
-  background: '#0F0F1A',
-  surface: '#1A1A2E',
-  card: '#16213E',
-  text: '#E8E8F0',
-  textMuted: '#6B6B8A',
+  background: '#FFFFFF',
+  surface: '#F4F6FB',
+  card: '#FFFFFF',
+  text: '#151827',
+  textMuted: '#667085',
   accent: '#FF6584',
-  success: '#4ECDC4',
-  border: 'rgba(108, 99, 255, 0.15)',
+  success: '#12B76A',
+  border: 'rgba(15, 23, 42, 0.08)',
 };
 
 const PROFILE_STATS = [
@@ -93,7 +94,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Profil</Text>
@@ -108,7 +109,7 @@ export default function ProfileScreen() {
               <Text style={styles.avatarText}>U</Text>
             </View>
             <TouchableOpacity style={styles.avatarEditBadge}>
-              <Ionicons name="camera" size={14} color={COLORS.text} />
+              <Ionicons name="camera" size={14} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(108,99,255,0.3)',
   },
   avatarText: {
-    color: COLORS.text,
+    color: '#FFFFFF',
     fontSize: 36,
     fontWeight: '800',
   },

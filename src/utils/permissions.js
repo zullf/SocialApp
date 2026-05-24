@@ -61,7 +61,7 @@ export async function requestMediaLibraryPermission() {
 
 export async function requestSaveMediaPermission() {
   try {
-    const existing = await MediaLibrary.getPermissionsAsync();
+    const existing = await MediaLibrary.getPermissionsAsync(true, ['photo']);
     if (existing.status === 'granted') return true;
 
     const shouldRequest = await confirmPermissionRequest(
@@ -70,7 +70,7 @@ export async function requestSaveMediaPermission() {
     );
     if (!shouldRequest) return false;
 
-    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const { status } = await MediaLibrary.requestPermissionsAsync(true, ['photo']);
     if (status !== 'granted') { showPermissionDeniedAlert('Simpan ke Galeri'); return false; }
     return true;
   } catch (e) { console.error('[Permissions] SaveMedia:', e); return false; }

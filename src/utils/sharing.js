@@ -1,5 +1,6 @@
 import * as Sharing from 'expo-sharing';
 import { Alert } from 'react-native';
+import { ensureLocalFileUri } from './localFile';
 
 export async function shareFile(fileUri, mimeType = 'image/jpeg') {
   try {
@@ -12,13 +13,15 @@ export async function shareFile(fileUri, mimeType = 'image/jpeg') {
       return false;
     }
 
-    await Sharing.shareAsync(fileUri, {
+    const localUri = await ensureLocalFileUri(fileUri, mimeType === 'image/jpeg' ? 'jpg' : 'bin');
+
+    await Sharing.shareAsync(localUri, {
       mimeType,
       dialogTitle: 'Bagikan Post SocialApp',
       UTI: mimeType === 'image/jpeg' ? 'public.jpeg' : 'public.item',
     });
 
-    console.log('[Sharing] File berhasil dibagikan:', fileUri);
+    console.log('[Sharing] File berhasil dibagikan:', localUri);
     return true;
   } catch (error) {
     if (error.message && error.message.includes('cancel')) {
