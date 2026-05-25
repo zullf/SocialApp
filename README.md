@@ -54,8 +54,6 @@ Aplikasi ini juga memakai beberapa API perangkat seperti kamera, lokasi, galeri,
 
 ## Cara Menjalankan
 
-Aplikasi ini menggunakan **Expo** dan **Firebase**.
-
 ### 1. Clone Repository
 ```bash
 git clone <URL_REPOSITORY>
